@@ -5,8 +5,13 @@ var dataset = require('./dataset.json');
   greater than 100000
   assign the resulting new array to `hundredThousandairs`
 */
+//console.log(dataset.bankBalances);
 var hundredThousandairs = null;
-
+function greaterThan10000(element, index, array){
+  return element.amount > 100000;
+}
+  hundredThousandairs = dataset.bankBalances.filter(greaterThan10000);
+  //console.log(hundredThousandairs);
 /*
   DO NOT MUTATE DATA.
 
@@ -24,7 +29,14 @@ var hundredThousandairs = null;
     }
   assign the resulting new array to `datasetWithRoundedDollar`
 */
-var datasetWithRoundedDollar = null;
+var datasetWithRoundedDollar = dataset.bankBalances.map(addValue);
+function addValue (element, index){
+  var newObj = {};
+    newObj.amount = element.amount;
+    newObj.state = element.state;
+    newObj.rounded = Math.round(element.amount);
+    return newObj;
+}
 
 /*
   DO NOT MUTATE DATA.
@@ -49,11 +61,26 @@ var datasetWithRoundedDollar = null;
     }
   assign the resulting new array to `roundedDime`
 */
-var datasetWithRoundedDime = null;
+var datasetWithRoundedDime = dataset.bankBalances.map(addValueRound);
+function addValueRound (element){
+  var newObj = {};
+  newObj.amount = element.amount;
+  newObj.state = element.state;
+  newObj.roundedDime = Math.round(element.amount * 10)/ 10;
+  return newObj;
+}
 
 // set sumOfBankBalances to be the sum of all value held at `amount` for each bank object
-var sumOfBankBalances = null;
+var sumOfBankBalances = parseFloat(dataset.bankBalances.reduce(addToBalances,0).toFixed(2));
+  function addToBalances(previous, current){
+    return previous + parseFloat(current.amount);
+  }
 
+// function sumBalances (previous,current,index){
+//   return previous + current.amount;
+// }
+
+//console.log(sumOfBankBalances);
 /*
   from each of the following states:
     Wisconsin
@@ -65,7 +92,17 @@ var sumOfBankBalances = null;
   take each `amount` and add 18.9% interest to it rounded to the nearest cent
   and then sum it all up into one value saved to `sumOfInterests`
  */
-var sumOfInterests = null;
+var sumOfInterests = parseFloat(dataset.bankBalances.reduce(addInterest,0).toFixed(2));
+function addInterest(prev,current, arr){
+  var stateArr = ["WI", "IL", "WY", "OH", "GA", "DE"];
+  var amount = 0;
+  if(stateArr.includes(current.state)){
+    amount = parseFloat(((current.amount) * 0.189).toFixed(2));
+  }
+  return prev + amount;
+}
+console.log(sumOfInterests);
+
 
 /*
   aggregate the sum of bankBalance amounts
