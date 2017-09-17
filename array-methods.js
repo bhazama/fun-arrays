@@ -120,7 +120,17 @@ console.log(sumOfInterests);
     round this number to the nearest 10th of a cent before moving on.
   )
  */
-var stateSums = null;
+var stateSums = dataset.bankBalances.reduce(something);
+function something(previous, current){
+  // if(!previous.hasOwnProperty(current.state)){
+  //   previous[current.state] = 0;
+  // }
+  previous[current.state] += parseFloat(current.amount);
+  previous[current.state] = Math.round(previous[current.state] * 100) / 100;
+  return previous;
+
+}
+console.log("WTF: ", stateSums);
 
 /*
   from each of the following states:
